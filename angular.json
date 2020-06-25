@@ -1,0 +1,150 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "test-angular": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/test-angular",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
+              // "src/eliteadmin/dist/css/style.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
+              // "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/eliteadmin/dist/css/pages/float-chart.css",
+              // "src/eliteadmin/dist/scss/style.scss",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "src/assets/node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+              "node_modules/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js",
+              // https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js
+              // https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js
+              // "node_modules/jquery/dist/jquery.js",
+              // "src/assets/node_modules/jquery/jquery-3.2.1.min.js",
+              // "node_modules/datatables.net/js/jquery.dataTables.js",
+
+              "src/assets/node_modules/popper/popper.min.js",
+              "src/assets/eliteadmin/dist/js/perfect-scrollbar.jquery.min.js",
+              "src/assets/eliteadmin/dist/js/waves.js",
+              // "src/assets/eliteadmin/dist/js/sidebarmenu.js",
+              "src/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js",
+              "src/assets/node_modules/sparkline/jquery.sparkline.min.js",
+              "src/assets/eliteadmin/dist/js/custom.min.js"
+              // "src/assets/node_modules/flot/excanvas.js",
+              // "src/assets/node_modules/flot/jquery.flot.js",
+              // "src/assets/node_modules/flot/jquery.flot.pie.js",
+              // "src/assets/node_modules/flot/jquery.flot.time.js",
+              // "src/assets/node_modules/flot/jquery.flot.stack.js",
+              // "src/assets/node_modules/flot/jquery.flot.crosshair.js",
+              // "src/assets/node_modules/flot.tooltip/js/jquery.flot.tooltip.min.js",
+              // "src/eliteadmin/dist/js/pages/flot-data.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [{
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "test-angular:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "test-angular:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "test-angular:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": [
+              "src/styles.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "test-angular:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "test-angular:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "test-angular"
+}

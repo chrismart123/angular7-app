@@ -1,0 +1,16 @@
+table.dataTable .test-hide {
+  display: none !important;
+}
+
+.content-loader {
+  width: 100%;
+  position: relative;
+  height: 400px;
+  border: 1px solid #efefef;
+}
+
+.content-loader .preloader {
+  position: absolute;
+  z-index: 1;
+  /* top: 200px; */
+}

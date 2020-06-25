@@ -1,0 +1,62 @@
+<p>network works!</p>
+<!-- <div class="table-responsive"> -->
+<table #dataTable class="table table-striped table-bordered table-sm row-border hover display color-table dark-table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Interface</th>
+      <th>Type</th>
+      <th>MAC</th>
+      <th>IP Address</th>
+      <th>Netmask</th>
+      <th>Gateway</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let td of tableData" (dblclick)="doubleClick($event, td, mymodal_networkSettings)">
+      <td>{{ td.id }}</td>
+      <td>{{ td.name }}</td>
+      <td>{{ td.type }}</td>
+      <td>{{ td.mac == "" ? "--" : td.mac }}</td>
+      <td>{{ td.address == "" ? "--" : td.address }}</td>
+      <td>{{ td.netmask == "" ? "--" : td.netmask }}</td>
+      <td>{{ td.gateway == "" ? "--" : td.gateway }}</td>
+    </tr>
+  </tbody>
+  <tbody *ngIf=" tableData?.length==0">
+    <tr>
+      <td colspan="3" class="no-data-available">No data!</td>
+    </tr>
+  </tbody>
+
+
+</table>
+
+
+<!-- // MODAL FOR network -->
+<ng-template #mymodal_networkSettings let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ title }} - {{modalData.name}}
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="preloader_test" *ngIf="loading">
+      <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">Loading..</p>
+      </div>
+    </div>
+
+    <div class="modal-container" *ngIf="!loading">
+      BOOM
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark">Submit</button>
+  </div>
+</ng-template>

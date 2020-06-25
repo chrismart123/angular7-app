@@ -1,0 +1,138 @@
+<p>license works!</p>
+<div class="row">
+  <div class="form-group row m-b-0">
+    <div class="col-md-12">
+      <!-- button-group -->
+      <div class="button-group">
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary"
+          (click)="openModal(mymodal_activateLicense,'activate')">Activate Online</button>
+        <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary"
+          (click)="openModal(mymodal_activateLicense,'refresh')">Refresh Online</button>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="clearfix"></div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group row">
+      <label class="control-label  col-md-3">License ID:</label>
+      <div class="col-md-9">
+        <!-- <p class="form-control-static"> {{serverlicenseData.installationId}} </p> -->
+        <input type="text" id="LicenseID" class="form-control" [(ngModel)]="serverlicenseData.licenseId"
+          [disabled]="inputDisabled" />
+        <!-- {{inputDisabled}} -->
+      </div>
+    </div>
+  </div>
+  <!--/span-->
+  <div class="col-md-6">
+    <div class="form-group row">
+      <label class="control-label  col-md-3">Product ID:</label>
+      <div class="col-md-9">
+        <input type="text" id="productId" class="form-control" [(ngModel)]="serverlicenseData.productId"
+          [disabled]="inputDisabled" />
+      </div>
+    </div>
+  </div>
+  <!--/span-->
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group row">
+      <label class="control-label col-md-3">Installation ID:</label>
+      <div class="col-md-9">
+        <input type="text" id="installationId" class="form-control" [(ngModel)]="serverlicenseData.installationId"
+          [disabled]="inputDisabled" />
+      </div>
+    </div>
+  </div>
+  <!--/span-->
+  <div class="col-md-6">
+    <div class="form-group row">
+      <label class="control-label  col-md-3">Installation Name:</label>
+      <div class="col-md-9">
+        <input type="text" id="installationId" class="form-control" [(ngModel)]="serverlicenseData.installationName"
+          [disabled]="inputDisabled" />
+      </div>
+    </div>
+  </div>
+  <!--/span-->
+</div>
+
+
+<!-- ///MODALS FOR LICCENSE -->
+<ng-template #mymodal_activateLicense let-modal>
+  <form class="form-horizontal form-material" [formGroup]="activateForm" (ngSubmit)="onSubmit()" id="activateForm">
+
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ title }}
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="preloader_test" *ngIf="loading">
+        <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">Loading..</p>
+        </div>
+      </div>
+
+      <div class="modal-container" *ngIf="!loading">
+        <div class="form-group ">
+          <div class="col-xs-12">
+            <label class="control-label">License ID</label>
+            <input type="text" formControlName="licenseId" class="form-control" placeholder="License ID"
+              [ngClass]="{ 'is-invalid': submitted && f.licenseId.errors }" />
+            <div *ngIf="submitted && f.licenseId.errors" class="invalid-feedback">
+              <div *ngIf="f.licenseId.errors.required">licenseId is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Password</label>
+          <input type="text" formControlName="password" id="password" class="form-control" placeholder="Password"
+            [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">InstallationName</label>
+          <input type="text" formControlName="installationName" id="installationName" class="form-control"
+            placeholder="installationName" [ngClass]="{ 'is-invalid': submitted && f.installationName.errors }" />
+          <div *ngIf="submitted && f.installationName.errors" class="invalid-feedback">
+            <div *ngIf="f.installationName.errors.required">installationName is required</div>
+          </div>
+        </div>
+
+        <div class="alert alert-{{alert}} alert-rounded" *ngIf="showMessage">
+          <i class="ti-user"></i> This is an example top alert. You can edit what u wish.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+      </div>
+      <!-- // end of modal container -->
+
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
+
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">
+        Ok
+      </button> -->
+    </div>
+  </form>
+</ng-template>
+
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(mymodal)">
+  Open My Modal
+</button> -->

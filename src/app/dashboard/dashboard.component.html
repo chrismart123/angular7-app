@@ -1,0 +1,51 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<div id="main-wrapper">
+  <app-header [dataHead]="allUsers" [testvalue]='testValue' (functionTest)="disconnect()"></app-header>
+
+  <app-sidebar></app-sidebar>
+  <!-- ============================================================== -->
+  <!-- Page wrapper  -->
+  <!-- ============================================================== -->
+  <div class="page-wrapper">
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid">
+      <!-- ============================================================== -->
+      <!-- Bread crumb and right sidebar toggle -->
+      <!-- ============================================================== -->
+      <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+          <h4 class="text-themecolor">Dashboard - {{userName}} - {{count}}</h4>
+          <ul>
+            <li *ngFor="let data of allUsers" class="fL">
+              {{data.userName}}
+            </li>
+          </ul>
+          <!-- <p></p> -->
+          <!-- <router-outlet></router-outlet> -->
+
+        </div>
+      </div>
+      <!-- //END OF ROW TITLE -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <router-outlet (activate)="onActivate($event)" #myRouterOutler></router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- //END OF ROW CONTENT -->
+
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->

@@ -1,0 +1,233 @@
+<p>datatables works!</p>
+
+<div class="row">
+  <div class="form-group row m-b-0">
+    <div class="col-md-12">
+      <!-- button-group -->
+      <div class="button-group">
+        <button
+          type="button"
+          class="btn waves-effect waves-light btn-rounded btn-primary btnAdd"
+          data-toggle="modal"
+          data-target="#myModal"
+          (click)="btnAddFunction()"
+        >
+          Add Users
+        </button>
+        <button
+          type="button"
+          class="btn waves-effect waves-light btn-rounded btn-primary"
+          (click)="openModal_CR(mymodal_commitRevert, 'commit')"
+        >
+          Commit
+        </button>
+        <button
+          type="button"
+          class="btn waves-effect waves-light btn-rounded btn-primary"
+          (click)="openModal_CR(mymodal_commitRevert, 'revert')"
+        >
+          Revert
+        </button>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- end of col md 12 -->
+  </div>
+  <!-- end of formGroup -->
+  <div class="col-md-12">
+    <div class="content-loader" [hidden]="!loading">
+      <div class="preloader">
+        <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">Loading..</p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- end of content-loader -->
+
+    <div class="content-table" [hidden]="loading">
+      <table #dataTableTest class="table display2" style="width: 100%;"></table>
+      <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- end of conten-table -->
+  </div>
+  <div class="clearfix"></div>
+  <!-- end of col md 12 -->
+</div>
+
+<!-- TABLE 2 -->
+<!-- <h1>Table 2</h1> -->
+
+<!-- // MODAL FOR CONFIRM COMMIT -->
+<ng-template #mymodal_commitRevert let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ commitRevert }}
+    </h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="preloader_test" *ngIf="loading">
+      <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">Loading..</p>
+      </div>
+    </div>
+    <div class="modal-container" *ngIf="!loading">
+      Are you sure you want to {{ commitRevert }} changes?
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span class="btn btn-outline-dark">Cancel</span>
+    <span
+      (click)="onClick_Commit()"
+      class="btn btn-outline-dark"
+      *ngIf="iscommitRevert"
+      >Commit</span
+    >
+    <span
+      (click)="onClick_Revert()"
+      class="btn btn-outline-dark"
+      *ngIf="!iscommitRevert"
+      >Revert</span
+    >
+  </div>
+</ng-template>
+
+<!-- Modal ADD UPDATE DELETE-->
+<div
+  class="modal fade mymodal"
+  id="myModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form
+        class="form-horizontal form-material"
+        [formGroup]="activateForm"
+        (ngSubmit)="onSubmit()"
+        id="activateForm"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body preloader_test" *ngIf="loading">
+          <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Loading..</p>
+          </div>
+        </div>
+        <div class="modal-body" *ngIf="!loading">
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Name</label>
+              <input
+                type="text"
+                formControlName="name"
+                class="form-control"
+                placeholder="Name"
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                [(ngModel)]="modalData.name"
+              />
+              <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required">name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Password</label>
+              <input
+                type="text"
+                formControlName="password"
+                class="form-control"
+                placeholder="Password"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                [(ngModel)]="modalData.password"
+              />
+              <div
+                *ngIf="submitted && f.password.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.password.errors.required">
+                  password is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Priviledge</label>
+              <!-- <input type="text" formControlName="priviledge" class="form-control" placeholder="priviledge"
+                [ngClass]="{ 'is-invalid': submitted && f.priviledge.errors }" [(ngModel)]="modalData.privilegeLevel" /> -->
+              <select
+                formControlName="priviledge"
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.priviledge.errors }"
+                [(ngModel)]="modalData.privilegeLevel"
+              >
+                <option value="">Choose Priviledge Access</option>
+                <option *ngFor="let lvl of privLevel" [ngValue]="lvl"
+                  >{{ lvl }}
+                </option>
+              </select>
+              <div
+                *ngIf="submitted && f.priviledge.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f.priviledge.errors.required">
+                  priviledge is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span
+            (click)="buttonType('edit')"
+            class="btn btn-outline-dark"
+            *ngIf="showEdit"
+            >Edit</span
+          >
+          <span
+            (click)="buttonType('delete')"
+            class="btn btn-outline-dark"
+            *ngIf="showDelete"
+            >Delete</span
+          >
+          <span
+            (click)="buttonType('add')"
+            class="btn btn-outline-dark"
+            *ngIf="showAdd"
+            >Add</span
+          >
+          <span class="btn btn-outline-dark" data-dismiss="modal">Close</span>
+        </div>
+      </form>
+    </div>
+    <!-- //end of content -->
+  </div>
+</div>

@@ -1,0 +1,223 @@
+<p>ang-dtables works!</p>
+
+
+<button type="button" class="btn waves-effect waves-light blue" (click)="rerender()">
+  Rerender
+</button>
+
+<div class="col-md-12">
+  <!-- button-group -->
+  <div class="button-group">
+    <!-- <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary btnAdd" data-toggle="modal"
+      data-target="#myModal" (click)="btnAddFunction()">
+
+      Add Users
+    </button> -->
+    <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary btnAdd" data-toggle="modal"
+      data-target="#myModal" (click)="openModal(myModal,'add')">
+
+      Add Users
+    </button>
+    <button type="button" class="btn waves-effect waves-light btn-rounded btn-primary"
+      (click)="openModal(mymodal_commit, 'commit')">
+      Commit
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Password</th>
+      <th>Priviledge</th>
+      <td>Action</td>
+    </tr>
+  </thead>
+  <tbody *ngIf="tableData?.length != 0">
+    <tr *ngFor="let data of tableData">
+      <td>{{ data.id }}</td>
+      <td>{{ data.name }}</td>
+      <td>{{ data.password }}</td>
+      <td>{{ data.privilegeLevel }}</td>
+      <td>
+        <div class="row">
+          <div class="col-md-6">
+            <span class="btn waves-effect waves-light btn-rounded btn-primary" (click)="openModal(myModal,'edit')">
+              Edit Users
+            </span>
+          </div>
+          <div class="col-md-6">
+            <span class="btn waves-effect waves-light btn-rounded btn-primary" (click)="openModal(myModal, 'del')">
+              Delete
+            </span>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tbody *ngIf="tableData?.length == 0">
+    <tr>
+      <td colspan="3" class="no-data-available">No data!</td>
+    </tr>
+  <tbody>
+</table>
+
+<!-- // MODAL FOR network -->
+<ng-template #myModal let-modal>
+  <form class="form-horizontal form-material" [formGroup]="activateForm" (ngSubmit)="onSubmit()" id="activateForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        {{ title }} - {{ modalData.name }} - {{ modalData.id }}
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="preloader_test" *ngIf="loading">
+        <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">Loading..</p>
+        </div>
+      </div>
+
+      <div class="modal-container" *ngIf="!loading">
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label class="control-label">Name</label>
+            <input type="text" formControlName="name" class="form-control" placeholder="Name"
+              [ngClass]="{ 'is-invalid': submitted && f.name.errors }" [(ngModel)]="modalData.name" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">name is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label class="control-label">Password</label>
+            <input type="text" formControlName="password" class="form-control" placeholder="Password"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }" [(ngModel)]="modalData.password" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">password is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-xs-12">
+            <label class="control-label">Priviledge</label>
+            <input type="text" formControlName="priviledge" class="form-control" placeholder="priviledge"
+              [ngClass]="{ 'is-invalid': submitted && f.priviledge.errors }" [(ngModel)]="modalData.privilegeLevel" />
+            <div *ngIf="submitted && f.priviledge.errors" class="invalid-feedback">
+              <div *ngIf="f.priviledge.errors.required">
+                priviledge is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span (click)="buttonType('edit')" class="btn btn-outline-dark" *ngIf='showEdit'>Edit</span>
+      <span (click)="buttonType('delete')" class="btn btn-outline-dark" *ngIf='showDelete'>Delete</span>
+      <span (click)="buttonType('add')" class="btn btn-outline-dark" *ngIf='showAdd'>Add</span>
+      <span class="btn btn-outline-dark" (click)="modal.dismiss('Cross click')">Cancel</span>
+      <!-- <button type="submit" class="btn btn-outline-dark">Submit</button> -->
+    </div>
+  </form>
+</ng-template>
+
+<!-- // MODAL FOR CONFIRM COMMIT -->
+<ng-template #mymodal_commit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Commit
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="preloader_test" *ngIf="loading">
+      <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">Loading..</p>
+      </div>
+    </div>
+
+    <div class="modal-container" *ngIf="!loading">
+      Are you sure you want to commit changes?
+    </div>
+  </div>
+  <div class="modal-footer">
+    <span class="btn btn-outline-dark">Cancel</span>
+    <span (click)="onClick_Commit()" class="btn btn-outline-dark">Submit</span>
+  </div>
+</ng-template>
+
+<!-- Modal ADD UPDATE DELETE
+<div class="modal fade mymodal" #myModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form class="form-horizontal form-material" [formGroup]="activateForm" (ngSubmit)="onSubmit()" id="activateForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class=" modal-body preloader_test" *ngIf="loading">
+          <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Loading..</p>
+          </div>
+        </div>
+        <div class="modal-body" *ngIf="!loading">
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Name</label>
+              <input type="text" formControlName="name" class="form-control" placeholder="Name"
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }" [(ngModel)]="modalData.name" />
+              <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required">name is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Password</label>
+              <input type="text" formControlName="password" class="form-control" placeholder="Password"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" [(ngModel)]="modalData.password" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">password is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <label class="control-label">Priviledge</label>
+              <input type="text" formControlName="priviledge" class="form-control" placeholder="priviledge"
+                [ngClass]="{ 'is-invalid': submitted && f.priviledge.errors }" [(ngModel)]="modalData.privilegeLevel" />
+              <div *ngIf="submitted && f.priviledge.errors" class="invalid-feedback">
+                <div *ngIf="f.priviledge.errors.required">
+                  priviledge is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span (click)="buttonType('edit')" class="btn btn-outline-dark" *ngIf="showEdit">Edit</span>
+          <span (click)="buttonType('delete')" class="btn btn-outline-dark" *ngIf="showDelete">Delete</span>
+          <span (click)="buttonType('add')" class="btn btn-outline-dark" *ngIf="showAdd">Add</span>
+          <span class="btn btn-outline-dark" data-dismiss="modal">Close</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
